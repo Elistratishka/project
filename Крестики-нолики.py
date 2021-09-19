@@ -87,7 +87,6 @@ def input_and_check(board, player, item):
             x = input('Строка - ведите цифру в пределах поля: ')
             y = input('Столбец - ведите цифру в пределах поля: ')
             continue
-        else: return x, y
         break
 
 
