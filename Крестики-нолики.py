@@ -73,12 +73,16 @@ def input_and_check(board, player, item):
     while True:
         try:
             x = int(x)
-            y = int(y)
-            board[x - 1][y - 1] = item
         except ValueError:
             x = input('Строка - ведите цифру: ')
+            continue
+        try:
+            y = int(y)
+        except ValueError:
             y = input('Столбец - введите цифру: ')
             continue
+        try:
+            board[x - 1][y - 1] = item
         except IndexError:
             x = input('Строка - ведите цифру в пределах поля: ')
             y = input('Столбец - ведите цифру в пределах поля: ')
