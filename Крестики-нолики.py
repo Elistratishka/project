@@ -9,9 +9,12 @@ def split(arr, size):
 
 
 def game_board():
-    size = input('Пожалуйста, введите "3", или ничего: ')
+    size = input('Введите размер игрового поля(по умолчанию 3): ')
     if size:
-        size = int(size)
+        try:
+            size = int(size)
+        except ValueError:
+            size = 3
     else:
         size = 3
     board = [['-' for j in range(size)] for i in range(size)]
@@ -64,9 +67,29 @@ def result(play_ground, size):
             return set(rev_diag)
 
 
+def input_and_check(board, player, item):
+    x = input(f'{player} введите строку: ')
+    y = input(f'{player} введите столбец: ')
+    while True:
+        try:
+            x = int(x)
+            y = int(y)
+            board[x - 1][y - 1] = item
+        except ValueError:
+            x = input('Строка - ведите цифру: ')
+            y = input('Столбец - введите цифру: ')
+            continue
+        except IndexError:
+            x = input('Строка - ведите цифру в пределах поля: ')
+            y = input('Столбец - ведите цифру в пределах поля: ')
+            continue
+        else: return x, y
+        break
+
+
 def game():
     print('''Добро пожаловать в игру "крестики-нолики"!''')
-    print('Размер игрового поля по умолчанию 3x3, но при желании можно использовать и большее поле')
+    print('Размер игрового поля по умолчанию 3x3, но при желании можно использовать любое поле')
     print('Нумерация строк и столбцов начинается с 1, а не с 0')
     print("Занятые другим игроком клетки можно перезаписывать (можно, конечно, это доработать, но пусть будет фича)")
     print('Побеждает игрок, полностью занявший строку, столбец или диагональ игрового поля')
@@ -76,17 +99,15 @@ def game():
     board, size = game_board()
     while True:
         print_board(board, size)
-        x = int(input(f'{player_1} введите строку: '))
-        y = int(input(f'{player_1} введите столбец: '))
-        board[x-1][y-1] = 'X'
+        item_1 = 'X'
+        input_and_check(board, player_1, item_1)
         print_board(board, size)
         winner = result(board, size)
         if winner == {'X'}:
             print(f"Победил {player_1}")
             break
-        c = int(input(f'{player_2} введите строку: '))
-        v = int(input(f'{player_2} введите столбец: '))
-        board[c-1][v-1] = 'O'
+        item_2 = 'O'
+        input_and_check(board, player_2, item_2)
         winner = result(board, size)
         if winner == {'O'}:
             print(f'Победил {player_2}')
