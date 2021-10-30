@@ -1,7 +1,7 @@
 import os
 import  telebot
 from dotenv import load_dotenv
-from extensions import get_data, convert
+from extensions import get_data, convert, ConvertionException
 
 load_dotenv()
 token = os.getenv("TOKEN")
@@ -35,16 +35,16 @@ def work(message: telebot.types.Message):
             raise ConvertionException("Введено неверное количество параметров.")
         amount, quote, base = letter
         cost = convert(amount, quote, base)
+    except ConvertionException as e:
+        bot.reply_to(message, f'Ошибка: {e}')
     except Exception:
         bot.send_message('Извините, что-то пошло не так')
-    text = f'Стоимость {amount} {quote} в {base} = {cost}'
-    bot.send_message(message.chat.id, text)
+    else:
+        text = f'Стоимость {amount} {quote} в {base} = {cost}'
+        bot.send_message(message.chat.id, text)
 
 
-bot.polling()
-
-
-
+bot.infinity_polling()
 
 
 
