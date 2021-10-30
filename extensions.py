@@ -18,7 +18,6 @@ def get_data():
         data[td[0].text.strip()] = float(td[3].text.strip())/float(td[1].text.strip())
     data.setdefault('RUB', 1)
     cripto = {}
-    WAX_price = 0
     for i, main_item in enumerate(js):
         if js[i]['base_token']['symbol']['name'] == 'WAX':
             cripto.setdefault(js[i]['quote_token']['symbol']['name'], js[i]['last_price'])
@@ -46,5 +45,5 @@ def convert(amount, quote, base):
 
 if __name__ == '__main__':
     data = get_data()
-    answer = convent(1, 'RUB', 'USD')
+    answer = convert(1, 'RUB', 'USD')
     print(answer)
